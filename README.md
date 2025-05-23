@@ -30,3 +30,7 @@ C'est bon, vous avez ajouté l'extension à votre navigateur. N'hésitez pas à 
 ![Zone des extensions](./img/extension.png)
 
 Maintenant en cliquant sur l'extension, vous pourrez extraire des images depuis n'importe quelle page web !
+
+## Licence
+
+Peacnut est sous licence MIT ([MIT-LICENSE](./LICENSE) ou [https://opensource.org/license/MIT](https://opensource.org/license/MIT))

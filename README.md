@@ -1,7 +1,9 @@
 Peacnut 🥜
 ===========
 
-Réalisé par Diego Posado Bañuls
+> Version: 1.0.2
+
+>Réalisé par Diego Posado Bañuls
 
 ## Comment l'utiliser sur sa machine
 

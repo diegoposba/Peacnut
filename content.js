@@ -125,7 +125,9 @@ function updateHighlight(element, mouseX, mouseY) {
              element.tagName === 'IMG' || 
              window.getComputedStyle(element).backgroundImage !== 'none';
   
-  const classList = element.className ? `.${element.className.split(' ').join('.')}` : '';
+  const classList = element.className && typeof element.className === 'string' && element.className.trim()
+  ? `.${element.className.trim().split(/\s+/).join('.')}`
+  : '';
   const id = element.id ? `#${element.id}` : '';
   
   let tooltipText = `${tagName}${id}${classList}`;

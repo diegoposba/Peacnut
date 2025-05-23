@@ -89,38 +89,63 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function toggleSelectionMode() {
     chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
-      if (!tabs[0]) return;
+      if (!tabs[0]) {
+        console.error('Aucun onglet actif trouvé');
+        return;
+      }
+      
+      const tab = tabs[0];
+      
+      if (tab.url.startsWith('chrome://') || 
+          tab.url.startsWith('chrome-extension://') || 
+          tab.url.startsWith('moz-extension://') || 
+          tab.url.startsWith('edge://')) {
+        console.log('Cannot run on browser internal pages');
+        alert('Cette extension ne peut pas fonctionner sur les pages internes du navigateur.');
+        return;
+      }
       
       try {
-        await chrome.tabs.sendMessage(tabs[0].id, {
+        await chrome.tabs.sendMessage(tab.id, {
           type: 'TOGGLE_SELECTION_MODE'
         });
+        console.log('Message envoyé au content script existant');
       } catch (err) {
         console.log('Content script pas encore injecté, injection en cours...');
         
         try {
           await chrome.scripting.executeScript({
-            target: { tabId: tabs[0].id },
+            target: { tabId: tab.id },
             files: ['content.js']
           });
           
           await chrome.scripting.insertCSS({
-            target: { tabId: tabs[0].id },
+            target: { tabId: tab.id },
             files: ['content.css']
           });
           
+          console.log('Scripts injectés avec succès');
+          
           setTimeout(async () => {
             try {
-              await chrome.tabs.sendMessage(tabs[0].id, {
+              await chrome.tabs.sendMessage(tab.id, {
                 type: 'TOGGLE_SELECTION_MODE'
               });
+              console.log('Message envoyé après injection');
             } catch (secondErr) {
-              console.error('Impossible de communiquer avec le content script:', secondErr);
+              console.error('Impossible de communiquer avec le content script après injection:', secondErr);
+              alert('Erreur: Impossible d\'activer le mode sélection sur cette page.');
             }
-          }, 100);
+          }, 200);
           
         } catch (injectErr) {
           console.error('Erreur injection script:', injectErr);
+          
+          if (injectErr.message.includes('Cannot access contents')) {
+            alert('Permissions insuffisantes pour cette page. Vérifiez que l\'extension a les bonnes permissions.');
+          } else {
+            alert('Erreur lors de l\'injection du script. Rechargez la page et réessayez.');
+          }
         }
       }
     });

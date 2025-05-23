@@ -19,15 +19,19 @@ Cliquez sur Clone Repository
 Entrez: https://github.com/diegoposba/Peacnut.git
 ```
 
-## Ajouter l'extension à Chrome
+## Ajouter l'extension à Chrome (ou Edge)
 
-Ouvrez Chrome et entrez cette URL: [chrome://extensions](chrome://extensions/).
+Ouvrez Chrome et entrez cette URL: [chrome://extensions](chrome://extensions/)(pour Edge: [edge://extensions](edge://extensions/)).
 
-Une fois sur cette page en haut à droite activez le **_Mode développeur_**. Normalement une navbar est apparue:
+Une fois sur cette page activez le **_Mode développeur_** en haut à droite sur Chrome (dans le menu à gauche sur Edge). Normalement une navbar est apparue:
 
+Chrome: 
 ![Navbar extension Chrome](./img/navbar.png)
 
-Maintenant cliquez sur _Charger l'extension non empaquetée_, votre explorateur de fichiers devrait s'ouvrir. 
+Edge:
+![Navbar extension Edge](./img/navbar-edge.png)
+
+Maintenant cliquez sur _Charger l'extension non empaquetée_ (respectivement _Charger l'extension décompressée_), votre explorateur de fichiers devrait s'ouvrir. 
 
 Allez chercher le dossier **Peacnut** et cliquez sur _Sélectionner un fichier_.
 
@@ -39,4 +43,4 @@ Maintenant en cliquant sur l'extension, vous pourrez extraire des images depuis 
 
 ## Licence
 
-Peacnut est sous licence MIT ([MIT-LICENSE](./LICENSE) ou [https://opensource.org/license/MIT](https://opensource.org/license/MIT))
+Peacnut est sous licence MIT ([MIT-LICENSE](./LICENSE) ou [https://opensource.org/license/MIT](https://opensource.org/license/MIT)).

@@ -10,7 +10,13 @@ Pour publier des extensions sur _Chrome Web Store_, il faut payer 5$, c'est pour
 Dans votre terminal ou directement dans VS Code clonez le git:
 
 ```
-https://github.com/diegoposba/Peacnut.git
+/* Dans le terminal */
+git clone https://github.com/diegoposba/Peacnut.git
+
+/* Dans VS Code */
+Crtl + Shift + G
+Cliquez sur Clone Repository 
+Entrez: https://github.com/diegoposba/Peacnut.git
 ```
 
 ## Ajouter l'extension à Chrome

@@ -303,6 +303,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     isSelectionMode = false;
     removeSelectionOverlay();
     sendResponse({success: true});
+  } else if (message.type === 'CHECK_STATUS') {
+    sendResponse({
+      isSelectionMode: isSelectionMode,
+      isLoaded: true
+    });
   }
   
   return true;
@@ -312,4 +317,25 @@ window.addEventListener('beforeunload', () => {
   removeSelectionOverlay();
 });
 
-} 
+let currentUrl = window.location.href;
+const observer = new MutationObserver(() => {
+  if (window.location.href !== currentUrl) {
+    currentUrl = window.location.href;
+    if (isSelectionMode) {
+      removeSelectionOverlay();
+      setTimeout(() => {
+        if (isSelectionMode) {
+          createSelectionOverlay();
+        }
+      }, 100);
+    }
+  }
+});
+
+observer.observe(document, { subtree: true, childList: true });
+
+window.addEventListener('beforeunload', () => {
+  observer.disconnect();
+});
+
+}

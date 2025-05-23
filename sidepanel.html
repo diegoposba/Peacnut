@@ -94,10 +94,11 @@
       padding: 20px;
       text-align: center;
       background:#fffbf7;
+      transition: border-color 0.3s ease;
     }
     
     .images-container.has-images {
-      border-color: #007bff;
+      border-color: #d48e3f;
       background: #fffbf7;
     }
     
@@ -135,6 +136,34 @@
       font-size: 12px;
       color: #6c757d;
       text-align: center;
+    }
+    
+    .download-btn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: transparent;
+      color: #d48e3f;
+      border: none;
+      border-radius: 6px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .download-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+            
+    .download-btn:hover {
+      color: #28a745;
+      transform: scale(1.1);
     }
     
     .delete-btn {
@@ -206,7 +235,7 @@
       <li>Survolez les éléments de la page</li>
       <li>Cliquez sur un élément contenant une image</li>
       <li>L'image apparaîtra ici</li>
-      <li>Glissez-déposez l'image où vous voulez</li>
+      <li>Téléchargez ou glissez-déposez l'image</li>
     </ol>
   </div>
   

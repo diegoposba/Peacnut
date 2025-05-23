@@ -8,9 +8,40 @@ document.addEventListener('DOMContentLoaded', function() {
   const imagesContainer = document.getElementById('imagesContainer');
   
   loadSavedImages();
+  checkCurrentTabStatus();
   
   selectModeBtn.addEventListener('click', toggleSelectionMode);
   clearImagesBtn.addEventListener('click', clearAllImages);
+  
+  chrome.tabs.onActivated.addListener(() => {
+    checkCurrentTabStatus();
+  });
+  
+  chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+    if (changeInfo.status === 'complete') {
+      checkCurrentTabStatus();
+    }
+  });
+  
+  function checkCurrentTabStatus() {
+    chrome.tabs.query({active: true, currentWindow: true}, async (tabs) => {
+      if (!tabs[0]) return;
+      
+      try {
+        const response = await chrome.tabs.sendMessage(tabs[0].id, {
+          type: 'CHECK_STATUS'
+        });
+        
+        if (response && response.isLoaded) {
+          updateSelectionModeUI(response.isSelectionMode);
+        } else {
+          updateSelectionModeUI(false);
+        }
+      } catch (err) {
+        updateSelectionModeUI(false);
+      }
+    });
+  }
   
   function removeImage(index) {
     console.log('Suppression de l\'image à l\'index:', index);
@@ -20,6 +51,32 @@ document.addEventListener('DOMContentLoaded', function() {
       renderImages();
       console.log('Image supprimée, il reste:', extractedImages.length, 'images');
     }
+  }
+  
+  function downloadImage(imageData, index) {
+    console.log('Téléchargement de l\'image:', imageData.src);
+    
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const extension = imageData.format || 'png';
+    const fileName = `peacnut-image-${timestamp}.${extension}`;
+    
+    fetch(imageData.src)
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      })
+      .catch(err => {
+        console.error('Erreur lors du téléchargement:', err);
+        window.open(imageData.src, '_blank');
+      });
   }
   
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -98,15 +155,19 @@ document.addEventListener('DOMContentLoaded', function() {
     if (active) {
       textSpan.textContent = 'Désactiver Sélection';
       selectModeBtn.classList.add('active');
-      statusDiv.textContent = 'Mode sélection ACTIF - Cliquez sur un élément';
-      statusDiv.classList.add('active');
-      statusDiv.classList.remove('inactive');
+      if (statusDiv) {
+        statusDiv.textContent = 'Mode sélection ACTIF - Cliquez sur un élément';
+        statusDiv.classList.add('active');
+        statusDiv.classList.remove('inactive');
+      }
     } else {
       textSpan.textContent = 'Mode Sélection';
       selectModeBtn.classList.remove('active');
-      statusDiv.textContent = 'Cliquez sur "Mode Sélection" pour commencer';
-      statusDiv.classList.remove('active');
-      statusDiv.classList.add('inactive');
+      if (statusDiv) {
+        statusDiv.textContent = 'Cliquez sur "Mode Sélection" pour commencer';
+        statusDiv.classList.remove('active');
+        statusDiv.classList.add('inactive');
+      }
     }
   }
   
@@ -146,18 +207,31 @@ document.addEventListener('DOMContentLoaded', function() {
       const imageItem = document.createElement('div');
       imageItem.className = 'image-item';
       
-      const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'delete-btn';
-        deleteBtn.title = 'Supprimer cette image';
-        deleteBtn.innerHTML = `
+      const downloadBtn = document.createElement('button');
+      downloadBtn.className = 'download-btn';
+      downloadBtn.title = 'Télécharger cette image';
+      downloadBtn.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
         </svg>
-        `;
-        deleteBtn.addEventListener('click', () => {
+      `;
+      downloadBtn.addEventListener('click', () => {
+        downloadImage(imageData, index);
+      });
+      
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-btn';
+      deleteBtn.title = 'Supprimer cette image';
+      deleteBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      `;
+      deleteBtn.addEventListener('click', () => {
         console.log('Clic sur le bouton de suppression, index:', index);
         removeImage(index);
       });
+      
       const img = document.createElement('img');
       img.src = imageData.src;
       img.alt = 'Image extraite';
@@ -172,6 +246,7 @@ document.addEventListener('DOMContentLoaded', function() {
         Source: ${imageData.url || 'Inconnue'}
       `;
       
+      imageItem.appendChild(downloadBtn);
       imageItem.appendChild(deleteBtn);
       imageItem.appendChild(img);
       imageItem.appendChild(imageInfo);

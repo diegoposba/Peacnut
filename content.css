@@ -1,0 +1,31 @@
+#image-selector-overlay {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+#selection-highlight {
+  box-shadow: 0 0 0 1px rgba(29, 155, 209, 0.5) !important;
+}
+
+#selection-tooltip {
+  white-space: nowrap;
+  text-shadow: none !important;
+}
+
+.image-selector-active {
+  cursor: crosshair !important;
+}
+
+.image-selector-active * {
+  cursor: crosshair !important;
+}
+
+@keyframes slideInFromRight {
+  from { 
+    transform: translateX(100%); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateX(0); 
+    opacity: 1; 
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Peacnut",
+  "version": "1.0.0",
+  "description": "Sélectionner et extraire des images depuis n'importe quelle page web",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "sidePanel",
+    "storage"
+  ],
+  "action": {
+    "default_title": "Peacnut",
+    "default_icon": {
+      "16": "peacnut.png",
+      "32": "peacnut.png",
+      "48": "peacnut.png",
+      "128": "peacnut.png"
+    }
+  },
+  "icons": {
+    "16": "peacnut.png",
+    "32": "peacnut.png",
+    "48": "peacnut.png",
+    "128": "peacnut.png"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

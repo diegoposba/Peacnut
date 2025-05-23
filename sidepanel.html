@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      width: 100%;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fffbf7;
+      box-sizing: border-box;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #e9ecef;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      margin: 0 0 10px 0;
+      color: #333;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+    }
+    
+    .header p {
+      color: #666;
+      margin: 0;
+      font-size: 14px;
+    }
+    
+    .controls {
+      margin-bottom: 30px;
+    }
+    
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: all 0.2s;
+      margin-bottom: 10px;
+    }
+    
+    .btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+    }
+    
+    #selectMode {
+      background: #d48e3f;
+      color: white;
+    }
+    
+    #selectMode:hover {
+      background: #c27e2e;
+    }
+    
+    #selectMode.active {
+      background: #dc3545;
+    }
+    
+    .images-section {
+      flex: 1;
+      margin-bottom: 20px;
+    }
+    
+    .images-container {
+      border: 2px dashed #dee2e6;
+      border-radius: 8px;
+      min-height: 200px;
+      padding: 20px;
+      text-align: center;
+      background:#fffbf7;
+    }
+    
+    .images-container.has-images {
+      border-color: #007bff;
+      background: #fffbf7;
+    }
+    
+    .placeholder {
+      color: #6c757d;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    
+    .image-item {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: relative;
+      border: 1px solid #e9ecef;
+    }
+    
+    .image-item img {
+      max-width: 100%;
+      max-height: 150px;
+      border-radius: 6px;
+      cursor: grab;
+      display: block;
+      margin: 0 auto;
+    }
+    
+    .image-item img:active {
+      cursor: grabbing;
+    }
+    
+    .image-info {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #6c757d;
+      text-align: center;
+    }
+    
+    .delete-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      color: #d48e3f;
+      border: none;
+      border-radius: 6px;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .delete-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+            
+    .delete-btn:hover {
+      color: rgba(220, 53, 69, 1);
+      transform: scale(1.1);
+    }
+    
+    .instructions {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #856404;
+    }
+    
+    .instructions h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+    }
+    
+    .instructions ol {
+      margin: 10px 0 0 0;
+      padding-left: 20px;
+    }
+    
+    .instructions li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>
+      <img src="peacnut.png" alt="Peacnut Logo" class="logo">
+      Peacnut
+    </h1>
+    <p>Extraire des images depuis n'importe quelle page web</p>
+  </div>
+  
+  <div class="instructions">
+    <h3>Comment utiliser :</h3>
+    <ol>
+      <li>Cliquez sur "Mode Sélection"</li>
+      <li>Survolez les éléments de la page</li>
+      <li>Cliquez sur un élément contenant une image</li>
+      <li>L'image apparaîtra ici</li>
+      <li>Glissez-déposez l'image où vous voulez</li>
+    </ol>
+  </div>
+  
+  <div class="controls">
+    <button id="selectMode" class="btn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5" />
+      </svg>
+      <span>Mode Sélection</span>
+    </button>
+    <button id="clearImages" class="btn">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+      </svg>
+      Vider le cache
+    </button>
+  </div>
+  
+  <div class="images-section">
+    <div id="imagesContainer" class="images-container">
+      <div class="placeholder">
+        Les images extraites apparaîtront ici<br><br>
+      </div>
+    </div>
+  </div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

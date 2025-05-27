@@ -1,9 +1,21 @@
 Peacnut 🥜
 ===========
 
-> Version: 1.0.2
+[![Projet déplacé](https://img.shields.io/badge/projet%20déplacé-voir%20ici-orange?style=flat&logo=github&logoColor=white.svg)](https://github.com/Australes-Inc/Peacnut)
 
->Réalisé par Diego Posado Bañuls
+---
+
+**⚠️ CE DÉPÔT N'EST PLUS MAINTENU ⚠️**
+
+Ce projet a été migré vers un nouveau dépôt GitHub. Toutes les futures mises à jour, corrections de bugs et contributions se feront sur le nouveau dépôt.
+
+Veuillez vous référer au nouveau dépôt pour la dernière version du code :
+➡️ **[Australes - Peacnut](https://github.com/Australes-Inc/Peacnut)**
+
+---
+
+
+> Version: 1.0.2
 
 ## Comment l'utiliser sur sa machine
 
